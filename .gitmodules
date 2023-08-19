@@ -1,3 +1,9 @@
 [submodule "Hub"]
-	path = Hub
+	path = ./Blueprints/Hub
 	url = ./Blueprints/Hub
+[submodule "Login"]
+	path =  ./Blueprints/Login
+	url = ./Blueprints/Login
+[submodule "ToDo"]
+	path =  ./Blueprints/ToDo
+	url = ./Blueprints/ToDo
