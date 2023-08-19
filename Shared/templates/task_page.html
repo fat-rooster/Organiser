@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Todo Task</title>
+    </head>
+    <body onload="loadInit()">
+        <h1>Todo List</h1>
+        <h2 id="task-description">Loading...</h2>
+        <button id="clear-button" onclick="clearTask()">Clear</button>
+        <button id="next-button" onclick="loadTask()">Next</button>
+        <button onclick="location.href='{{url_for('Todo.submit_task')}}'" type="button">Submit New Task</button>
+        <button onclick="location.href='{{url_for('Todo.get_all_tasks')}}'" type="button">View All Tasks</button>
+        <button onclick="location.href='{{url_for('Hub.hub')}}'" type="button">Hub</button>
+        <button onclick="location.href='{{url_for('Login.logout')}}'" type="button">Log Out</button>
+        <script>
+            let currentTask = null;
+            let nexttask = null
+
+            async function loadInit(){
+                {
+                    const response = await fetch('{{url_for('Todo.supply_random_task')}}');
+                    if (!response.ok) {
+                        document.getElementById('task-description').innerText = 'Failed to load task';
+                        return;
+                    }
+                    const task = await response.json();
+                    currentTask = task;
+                }
+                
+                {
+                    const response = await fetch('{{url_for('Todo.supply_random_task')}}');
+                    nextTask = await response.json();
+                }
+                const task = nextTask
+                document.getElementById('task-description').innerText = task.task_description;
+                console.log(task)
+            }
+
+            async function loadTask() {
+                currentTask = nextTask;
+                document.getElementById('task-description').innerText = currentTask.task_description;
+                const response = await fetch('{{url_for('Todo.supply_random_task')}}');
+                if (!response.ok) {
+                    document.getElementById('task-description').innerText = 'Failed to load task';
+                    return;
+                }
+                nextTask = await response.json();
+                
+            }
+
+            async function clearTask() {
+                if (!currentTask) return;
+                document.getElementById('task-description').innerText = ''
+                const responseP = fetch(`{{url_for('Todo.clear_task_api', task_id = '')}}${currentTask.task_id}`, {method: 'DELETE'});
+                loadTask();
+                response = await responseP;
+                if (!response.ok) {
+                    alert('Failed to clear task');
+                    return;
+                }
+            }
+        </script>
+    </body>
+</html>

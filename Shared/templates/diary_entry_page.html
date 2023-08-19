@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Diary Entry</title>
+</head>
+<body>
+    <form id="user-form" method="POST" action="/api/submit_entry">
+        <input type="date" id="date" name="date" required><br>
+        <input type="text" id="entry" name="entry" required><br>
+        <input type="submit" value="Submit">
+    </form>
+    <input type="date" id="goto_start_date" name="goto_start_date">
+    <input type="date" id="goto_end_date" name="goto_end_date">
+    <button onclick="goto_date()" type="button">Look at Date</button>
+    <button onclick="goto_date_range()" type="button">Look at Date Range</button>
+</body>
+<script>
+let date = new Date();
+let formattedDate = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+document.querySelector("input[name='date']").value = formattedDate;
+document.getElementById("goto_start_date").value = formattedDate;
+document.getElementById("goto_end_date").value = formattedDate;
+
+function goto_date(){
+    newdate=document.getElementById("goto_start_date").value;
+    location.href=`/entries/${newdate}`;
+
+}
+function goto_date_range(){
+    let params = {
+        start_date : document.getElementById("goto_start_date").value,
+        end_date : document.getElementById("goto_end_date").value
+    };
+    let url = buildURL("/date_range", params);
+    location.href=url;
+
+}
+
+function buildURL(baseURL, params) {
+    let url = new URL(baseURL, window.location.origin);
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+    return url.toString();
+}
+</script>
+</html>

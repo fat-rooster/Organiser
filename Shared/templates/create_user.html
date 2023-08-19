@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task List</title>
+</head>
+<body>
+    <form id="user-form" method="POST" action="{{url_for('Login.create_user_form')}}">
+        <input type="text" id="user_name" name="user_name" required><br>
+        <input type="text" id="password" name="password" required><br>
+        <input type="submit" value="Submit">
+    </form>
+    <button onclick="location.href='{{url_for('Login.login_page')}}'" type="button">Log in</button>
+</body>
+</html>

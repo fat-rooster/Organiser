@@ -1,6 +1,0 @@
-[submodule "QuickToDo"]
-	path = QuickToDo
-	url = ../QuickToDo/
-[submodule "Diary"]
-	path = Diary
-	url = ../Diary

@@ -1,0 +1,4 @@
+<div  id = "task{{index}}" class="task">
+    <h2>{{ task.task_description }}</h2>
+    <button id="clear-button" onclick="clearTask(document.getElementById('task{{index}}'), '{{ task.task_id }}')">Clear</button>
+</div>

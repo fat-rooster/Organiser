@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Task List</title>
+</head>
+<body>
+    
+    <button onclick="location.href='{{url_for('Todo.empty_request')}}'" type="button">Back to Home</button>
+    {% for task in tasks %}{%with index = loop.index %}
+        {%include 'task.html' %}
+    {% endwith %}{% endfor %}
+</body>
+<script>
+    async function clearTask(element, id) {
+        const url = "{{url_for('Todo.clear_task_api', task_id = '')}}" + id
+        const response = await fetch(url, {method: 'DELETE'});
+        if (!response.ok) {
+            alert('Failed to clear task');
+            return;
+        }
+        element.remove();
+    }
+</script>
+</html>
