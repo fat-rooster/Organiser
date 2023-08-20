@@ -1,36 +1,21 @@
-from flask import g
 import sqlite3
 import uuid
 from datetime import date, timedelta
+from Utilities.Db_utilities import get_db, table_ids
 
-def create_table(conn):
-    sql = """CREATE TABLE IF NOT EXISTS diary (
-        date TEXT,
-        entry TEXT
-    )
-
-    """
-    conn.execute(sql)
-
-def dict_factory(cursor, row):
-    fields=[column[0] for column in cursor.description]
-    return {key: value for key, value in zip(fields, row)}
-def create_connection():
-    conn=sqlite3.connect('diary_db.sqlite')
-    conn.row_factory = dict_factory
-    return conn
-    
-def get_db():
-    if 'db' not in g:
-        g.db = create_connection()
-        create_table(g.db)
-    return g.db
-
-def submit_entry(date, entry):
-    sql = """INSERT INTO diary(date, entry) VALUES (?, ?) """
-    conn=get_db()
-    conn.execute(sql, (date.isoformat(), entry))
-    conn.commit()
+def submit_entry(date, entry, tags):
+    try:
+        conn = get_db()
+        entry_id = str(uuid.uuid4())
+        conn.execute('BEGIN TRANSACTION')
+        conn.execute('INSERT INTO entities(entity_id, table_index) VALUES (?, ?)', (entry_id, table_ids.diary))
+        conn.execute('INSERT INTO diary(entry_id, date, entry) VALUES (?, ?, ?)', (entry_id, date.isoformat(), entry))    
+        for tag in tags:
+            conn.execute('INSERT INTO connections(source_id, dest_id) VALUES (?, ?)', (tag, entry_id))
+        conn.commit()
+    except:
+        conn.rollback()
+        raise
 
 class DiaryDay:
     def __init__(self, date, entries):
@@ -38,19 +23,27 @@ class DiaryDay:
         self.entries=entries
         
 
-def view_entries(date):
+def view_entries(date, user):
     print(date)
-    sql = """SELECT entry FROM diary WHERE date = ?"""
+    sql = """
+    SELECT entry FROM 
+    diary 
+    JOIN connections ON diary.entry_id = connections.dest_id
+    WHERE connections.source_id = ?
+    AND diary.date = ?
+    """
     conn=get_db()
     cur=conn.cursor()
-    cur.execute(sql, (date.isoformat(),))
+    cur.execute(sql, (user.id, date.isoformat()))
     entries=cur.fetchall()
     return DiaryDay(date, entries)
 
-def view_date_range(start, end):
+def view_date_range(start, end, user):
     delta = end - start
     date_range = range(delta.days + 1)
     def delta_to_date(i):
         return start + timedelta(days=i)
     dates= map( delta_to_date, date_range)
-    return map(view_entries, dates)
+    def get_entries(date):
+        return view_entries(date, user)
+    return map(get_entries, dates)

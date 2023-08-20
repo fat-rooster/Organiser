@@ -7,3 +7,6 @@
 [submodule "ToDo"]
 	path =  ./Blueprints/ToDo
 	url = ./Blueprints/ToDo
+[submodule "Diary"]
+	path =  ./Blueprints/Diary
+	url = ./Blueprints/Diary

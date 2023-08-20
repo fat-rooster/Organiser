@@ -16,12 +16,15 @@ create_users_table(0, conn)
 from Blueprints.ToDo import todo, create_tasks_table
 create_tasks_table(1, conn)
 
+from Blueprints.Diary import diary, create_diary_entries_table
+create_diary_entries_table(2, conn)
+
 conn.close()
 
 app.register_blueprint(login, url_prefix = '/login')
 app.register_blueprint(hub, url_prefix = '/user')
 app.register_blueprint(todo, url_prefix = '/todo')
-
+app.register_blueprint(diary, url_prefix = '/diary')
 
 @login_manager.user_loader
 def load_user(user_id):

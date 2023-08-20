@@ -7,7 +7,7 @@
     {% for day_page in dates %}{%with day = loop.index, date=day_page.date, entries = day_page.entries %}
         {%include 'diary_day.html' %}
     {% endwith %}{% endfor %}
-    <button onclick="location.href = '/'" type="button">Back to Home</button>
+    <button onclick="location.href = '{{url_for('Diary.index')}}'" type="button">Back to Home</button>
 </body>
 
 </html>
