@@ -1,12 +1,12 @@
 [submodule "Hub"]
 	path = ./Blueprints/Hub
-	url = ./Blueprints/Hub
+	url = https://github.com/fat-rooster/Hub
 [submodule "Login"]
 	path =  ./Blueprints/Login
-	url = ./Blueprints/Login
+	url = https://github.com/fat-rooster/Login
 [submodule "ToDo"]
 	path =  ./Blueprints/ToDo
-	url = ./Blueprints/ToDo
+	url = https://github.com/fat-rooster/ToDo
 [submodule "Diary"]
 	path =  ./Blueprints/Diary
-	url = ./Blueprints/Diary
+	url = https://github.com/fat-rooster/Diary
