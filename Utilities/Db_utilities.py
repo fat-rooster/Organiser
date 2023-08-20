@@ -13,7 +13,6 @@ def create_connection():
         conn = sqlite3.connect(DATABASE_URL) # Creates the file if it does not exist
         conn.row_factory = dict_factory
         conn.execute('PRAGMA foreign_keys = ON')
-        print(f'Successful connection with sqlite version {sqlite3.version}')
     except Error as e:
         print(f'An error occurred: {e}')
     return conn
@@ -102,7 +101,6 @@ def db_build():
 def get_user(user_id):
     conn=get_db()
     cur = conn.cursor()
-    print(user_id)
     cur.execute('SELECT user_name FROM users WHERE user_id = ?', (user_id,))
     user_name = cur.fetchone()
     return user_name['user_name'] if user_name else None

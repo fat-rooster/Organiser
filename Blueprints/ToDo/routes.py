@@ -26,7 +26,6 @@ def submit_task_api():
 @todo.route('/api/get_task')
 def supply_random_task():
     task=get_task([current_user.id])
-    print(task)
     return task
 
 @todo.route('/api/clear_task/<task_id>', methods=['DELETE'])
