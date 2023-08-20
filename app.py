@@ -2,9 +2,10 @@ from flask import Flask, render_template, redirect, url_for, g
 from flask_login import LoginManager, current_user
 from Models.usermodel import User
 from Utilities.Db_utilities import db_build
+from settings import SECRET_KEY
 
-app = Flask(__name__, static_url_path = '/Shared/', template_folder = 'Shared/templates')
-app.secret_key = 'my secret'
+app = Flask(__name__, static_url_path = '/Shared/static', template_folder = 'Shared/templates')
+app.secret_key = SECRET_KEY
 login_manager = LoginManager()
 login_manager.init_app(app)
 conn = db_build()

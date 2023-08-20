@@ -1,6 +1,7 @@
 from flask import g
 import sqlite3
-from sqlite3 import Error
+from sqlite3 import Error 
+from settings import DATABASE_URL
 
 def dict_factory(cursor, row):
     fields = [column[0] for column in cursor.description]
@@ -9,7 +10,7 @@ def dict_factory(cursor, row):
 def create_connection():
     conn = None
     try:
-        conn = sqlite3.connect('./organiser_db.sqlite') # Creates the file if it does not exist
+        conn = sqlite3.connect(DATABASE_URL) # Creates the file if it does not exist
         conn.row_factory = dict_factory
         conn.execute('PRAGMA foreign_keys = ON')
         print(f'Successful connection with sqlite version {sqlite3.version}')
