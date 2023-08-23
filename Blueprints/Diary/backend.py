@@ -26,7 +26,7 @@ class DiaryDay:
 def view_entries(date, user):
     print(date)
     sql = """
-    SELECT entry FROM 
+    SELECT entry_id, entry FROM 
     diary 
     JOIN connections ON diary.entry_id = connections.dest_id
     WHERE connections.source_id = ?
@@ -37,6 +37,22 @@ def view_entries(date, user):
     cur.execute(sql, (user.id, date.isoformat()))
     entries=cur.fetchall()
     return DiaryDay(date, entries)
+
+def modify_date(entry_id, new_date):
+    sql = """
+    UPDATE diary
+    SET date = ?
+    WHERE entry_id = ?
+    """
+    conn=get_db()
+    conn.execute(sql, (new_date.isoformat(), entry_id))
+    conn.commit()
+
+def delete_entry(entry_id):
+    sql = """DELETE FROM entities WHERE entity_id = ?"""
+    conn = get_db()
+    conn.execute(sql, (entry_id,))
+    conn.commit()
 
 def view_date_range(start, end, user):
     delta = end - start

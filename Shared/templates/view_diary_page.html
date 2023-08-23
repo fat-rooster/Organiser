@@ -9,5 +9,31 @@
     {% endwith %}{% endfor %}
     <button onclick="location.href = '{{url_for('Diary.index')}}'" type="button">Back to Home</button>
 </body>
+<script>
+    async function clearEntry(element_id, id) {
+        const url = "{{url_for('Diary.delete_entry_route', entry_id = '')}}" + id;
+        const response = await fetch(url, {method: 'DELETE'});
+        if (!response.ok) {
+            alert('Failed to clear task');
+            return;
+        }
+        element=document.getElementById(element_id)
+        element.remove();
+    }
+    async function changeDate(newDateElementName, id) { 
+        const url = "{{url_for('Diary.change_date')}}"
+        newDate = document.getElementById(newDateElementName).value
+        console.log(newDate);
+        console.log(id);
+        const formData = new FormData()
+        formData.append('entry_id', id)
+        formData.append('new_date', newDate)
+        await fetch(url, {
+            method: 'POST',
+            body: formData
+        })
+    }
+
+</script>
 
 </html>

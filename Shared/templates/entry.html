@@ -1,3 +1,6 @@
-<div  id = "entry{{day}}{{index}}" class="entry">
+<div  id = "entry{{day}}-{{index}}" class="entry">
     <p>{{ entry.entry }}</p>
+    <input type="date" id="new_date{{entry.entry_id}}" name="new_date{{entry.entry_id}}">
+    <button onclick="changeDate('new_date{{entry.entry_id}}', '{{entry.entry_id}}')" type="button">Change Date</button>
+    <button onclick="clearEntry('entry{{day}}-{{index}}', '{{entry.entry_id}}')" type="button">Remove Entry</button>
 </div>

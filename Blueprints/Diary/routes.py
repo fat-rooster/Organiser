@@ -2,7 +2,7 @@ from . import diary
 from flask import render_template, request
 from flask_login import current_user
 from datetime import date
-from .backend import view_entries, view_date_range, submit_entry
+from .backend import view_entries, view_date_range, submit_entry, modify_date, delete_entry
 
 @diary.route('/', methods = ['GET'])
 def index():
@@ -32,4 +32,16 @@ def submit_entry_api():
 def get_day_entries(date_str):
     date_obj = date.fromisoformat(date_str)
     return view_entries([date_obj])
-    
+
+@diary.route('/api/change_date', methods = ['POST'])
+def change_date():
+    entry_id = request.form.get('entry_id')
+    new_date = date.fromisoformat(request.form.get('new_date'))
+    modify_date(entry_id, new_date)
+    return '', 204
+
+@diary.route('/api/delete_entry<entry_id>', methods = ['DELETE'])
+def delete_entry_route(entry_id):
+    delete_entry(entry_id)
+    return '', 204
+
