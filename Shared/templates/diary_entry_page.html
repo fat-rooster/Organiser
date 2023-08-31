@@ -13,6 +13,7 @@
     <input type="date" id="goto_end_date" name="goto_end_date">
     <button onclick="goto_date()" type="button">Look at Date</button>
     <button onclick="goto_date_range()" type="button">Look at Date Range</button>
+    <button onclick="print_date_range()" type="button">Look at Date Range</button>
 </body>
 <script>
 let date = new Date();
@@ -33,6 +34,16 @@ function goto_date_range(){
         end_date : document.getElementById("goto_end_date").value
     };
     let url = buildURL("{{url_for('Diary.view_date_range_page')}}", params);
+    location.href=url;
+
+}
+
+function print_date_range(){
+    let params = {
+        start_date : document.getElementById("goto_start_date").value,
+        end_date : document.getElementById("goto_end_date").value
+    };
+    let url = buildURL("{{url_for('Diary.print_date_range_page')}}", params);
     location.href=url;
 
 }

@@ -1,0 +1,4 @@
+<h2>{{date}}</h2>
+{% for entry in entries %}{%with index = loop.index, day =day %}
+    {%include 'print_entry.html' %}
+{% endwith %}{% endfor %}

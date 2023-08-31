@@ -21,6 +21,13 @@ def view_date_range_page():
     entries = view_date_range(start_date, end_date, current_user)
     return render_template('view_diary_page.html', dates = entries)
 
+@diary.route('/print_date_range')
+def print_date_range_page():
+    start_date = date.fromisoformat(request.args.get('start_date'))
+    end_date = date.fromisoformat(request.args.get('end_date'))
+    entries = view_date_range(start_date, end_date, current_user)
+    return render_template('print_diary_page.html', dates = entries)
+
 @diary.route('/api/submit_entry', methods = ['POST'])
 def submit_entry_api():
     date_str = request.form['date']
